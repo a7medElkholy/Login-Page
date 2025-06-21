@@ -8,6 +8,7 @@ var button = document.getElementById('btn')
 var body = document.getElementById('body');
 var message = document.getElementById('warning-message');
 var icons = document.getElementById('icons');
+var allRequired = document.getElementById('allRequired');
 var usersList = [] ;
 
 // check if their are data in local storage
@@ -39,7 +40,17 @@ icons.addEventListener('click',function(){
 // check if the email and password found in the array
 button.addEventListener('click',function(e){
     e.preventDefault();
-    checkIfFound();
+    if(emailInput.value===''||passwordInput.value==='')
+        {
+            allRequired.classList.replace('d-none','d-block'); 
+        }
+
+        else{
+            if(allRequired.classList.contains('d-block')){
+                allRequired.classList.replace('d-block','d-none');
+            }
+            checkIfFound();
+        }
 })
 
 // change the page to sign up 
@@ -62,8 +73,17 @@ function add(){
     var passwordInput2 = document.getElementById('signinPassword2');
     var alreadyExist = document.getElementById('alreadyExist');
     var doneSign = document.getElementById('doneSign');
+    allRequired = document.getElementById('allRequired');
 
+    if(NameInput.value===''||emailInput2.value===''||passwordInput2.value===''){
+        allRequired.classList.replace('d-none','d-block');
+        if(doneSign.classList.contains('d-block'))
+        {
+            doneSign.classList.replace('d-block','d-none');
+        }
+    }
     
+    else{
     var users = {
              Name: NameInput.value ,
              Email: emailInput2.value ,
@@ -79,9 +99,14 @@ function add(){
     }
 
      usersList.push(users);
-     doneSign.classList.replace('d-none','d-block');
-     localStorage.setItem ('usersList',JSON.stringify(usersList));
+     if(allRequired.classList.contains('d-block'))
+    {
+        allRequired.classList.replace('d-block','d-none');
+    }
 
+    doneSign.classList.replace('d-none','d-block');
+     localStorage.setItem ('usersList',JSON.stringify(usersList));
+    }
     
 
 
@@ -104,6 +129,7 @@ function displaySignUp (){
 
          <p id="alreadyExist" class="text-danger d-none text-center">email already exists</p>
          <p id="doneSign" class="text-green d-none text-center">Sucess</p>
+         <p id="allRequired" class="text-danger d-none text-center">All inputs is required</p>
 
          <button id="btn2" class="rounded-2 my-3">Sign Up</button>
          <span class="text-white">Don’t have an account? <a href="">Sign in</a></span>
